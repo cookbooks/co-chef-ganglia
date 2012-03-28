@@ -4,3 +4,7 @@ default[:ganglia][:checksum] = "bb1a4953"
 default[:ganglia][:cluster_name] = "default"
 default[:ganglia][:unicast] = false
 default[:ganglia][:server_role] = "ganglia"
+
+# A list if chef node names that are in a cluster. This is 
+# ignored if Unicast is used.
+default[:ganglia][:cluster_nodes] = []
