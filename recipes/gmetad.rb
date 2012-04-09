@@ -16,7 +16,7 @@ directory "/var/lib/ganglia/rrds" do
   recursive true
 end
 
-case node[:ganglia][:unicast]
+case node[:ganglia][:unicast][:enable]
 when true
   template "/etc/ganglia/gmetad.conf" do
     source "gmetad.conf.erb"

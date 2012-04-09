@@ -35,7 +35,7 @@ end
 
 directory "/etc/ganglia"
 
-case node[:ganglia][:unicast]
+case node[:ganglia][:unicast][:enable]
 when true
   host = search(:node, "role:#{node['ganglia']['server_role']} AND chef_environment:#{node.chef_environment}").map {|node| node.ipaddress}
   if host.empty? 
