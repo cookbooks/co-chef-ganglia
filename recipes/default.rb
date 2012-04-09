@@ -43,14 +43,22 @@ when true
   end
   template "/etc/ganglia/gmond.conf" do
     source "gmond_unicast.conf.erb"
-    variables( :cluster_name => node[:ganglia][:cluster_name],
-               :host => host )
+    variables(
+      :cluster => node[:ganglia][:cluster],
+      :unicast => node[:ganglia][:unicast],
+      :host => host,
+    )
     notifies :restart, "service[ganglia-monitor]"
   end
 when false
   template "/etc/ganglia/gmond.conf" do
     source "gmond.conf.erb"
-    variables( :cluster_name => node[:ganglia][:cluster_name] )
+    variables(
+      :cluster => node[:ganglia][:cluster],
+      :mcast_send => node[:ganglia][:multicast][:send_channel],
+      :mcast_recv => node[:ganglia][:multicast][:recv_channel],
+      :host => host,
+    )
     notifies :restart, "service[ganglia-monitor]"
   end
 end

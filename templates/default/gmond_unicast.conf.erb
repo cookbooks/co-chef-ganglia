@@ -18,10 +18,10 @@ globals {
  * of a <CLUSTER> tag.  If you do not specify a cluster tag, then all <HOSTS> will 
  * NOT be wrapped inside of a <CLUSTER> tag. */ 
 cluster { 
-  name = "<%= @cluster_name %>"
-  owner = "unspecified" 
-  latlong = "unspecified" 
-  url = "unspecified" 
+  name = "<%= @cluster[:name] %>"
+  owner = "<%= @cluster[:owner] %>"
+  latlong = "<%= @cluster[:latlong] %>"
+  url = "<%= @cluster[:url] %>"
 } 
 
 /* The host section describes attributes of the host, like the location */ 
@@ -33,19 +33,19 @@ host {
    used to only support having a single channel */ 
 udp_send_channel { 
   host = <%= @host %>
-  port = 8649 
-  ttl = 1 
+  port = <%= @unicast[:port] %>
+  ttl = <%= @unicast[:ttl] %>
 } 
 
 /* You can specify as many udp_recv_channels as you like as well. */ 
 udp_recv_channel { 
-  port = 8649 
+  port = <%= @unicast[:port] %>
 } 
 
 /* You can specify as many tcp_accept_channels as you like to share 
    an xml description of the state of the cluster */ 
 tcp_accept_channel { 
-  port = 8649 
+  port = <%= @unicast[:port] %>
 } 
 
 /* Each metrics module that is referenced by gmond must be specified and 
