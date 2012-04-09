@@ -46,7 +46,7 @@ when true
     variables(
       :cluster => node[:ganglia][:cluster],
       :unicast => node[:ganglia][:unicast],
-      :host => host,
+      :host => host
     )
     notifies :restart, "service[ganglia-monitor]"
   end
@@ -57,7 +57,7 @@ when false
       :cluster => node[:ganglia][:cluster],
       :mcast_send => node[:ganglia][:multicast][:send_channel],
       :mcast_recv => node[:ganglia][:multicast][:recv_channel],
-      :host => host,
+      :host => host
     )
     notifies :restart, "service[ganglia-monitor]"
   end
