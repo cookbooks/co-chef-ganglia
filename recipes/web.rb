@@ -7,7 +7,9 @@ when "ubuntu", "debian"
   link "/etc/apache2/sites-enabled/ganglia" do
     to "/etc/ganglia-webfrontend/apache.conf"
     notifies :restart, "service[apache2]"
-    not_if node[:ganglia][:apache][:write_config_file]
+    not_if do 
+      node[:ganglia][:apache][:write_config_file]
+    end
   end
 
 when "redhat", "centos", "fedora"
@@ -25,7 +27,7 @@ end
 
 # If applicable, write an apache config file for Ganglia
 if node[:ganglia][:apache][:write_config_file]
-  template "/etc/apache2/sites-available/ganglia" do
+  template "/etc/apache2/sites-available/ganglia.conf" do
     source  "apache.conf.erb"
     owner   "root"
     group   "root"
@@ -47,10 +49,19 @@ if node[:ganglia][:apache][:write_config_file]
     EOH
     not_if "grep 'Listen #{node[:ganglia][:apache][:vhost_port]}' ports.conf"
   end
+
+  # Enable this site
+  file "/etc/apache2/sites-enabled/ganglia" do
+    action :delete
+  end
+  link "/etc/apache2/sites-enabled/ganglia" do
+    to "/etc/apache2/sites-available/ganglia.conf"
+  end
+
 end
 
 service "apache2" do
   service_name "httpd" if platform?( "redhat", "centos", "fedora" )
   supports :status => true, :restart => true, :reload => true
-  action [ :enable, :start ]
+  action :enable
 end
