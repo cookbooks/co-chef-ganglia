@@ -56,12 +56,6 @@ if node[:ganglia][:apache][:write_config_file]
   end
   link "/etc/apache2/sites-enabled/ganglia" do
     to "/etc/apache2/sites-available/ganglia.conf"
+    notifies :reload, resources( :service => "apache2"), :delayed
   end
-
-end
-
-service "apache2" do
-  service_name "httpd" if platform?( "redhat", "centos", "fedora" )
-  supports :status => true, :restart => true, :reload => true
-  action :enable
 end
