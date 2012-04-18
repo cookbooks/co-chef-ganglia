@@ -27,7 +27,7 @@ end
 
 # If applicable, write an apache config file for Ganglia
 if node[:ganglia][:apache][:write_config_file]
-  template "/etc/apache2/sites-available/ganglia.conf" do
+  template "/etc/apache2/sites-available/ganglia" do
     source  "apache.conf.erb"
     owner   "root"
     group   "root"
@@ -50,12 +50,9 @@ if node[:ganglia][:apache][:write_config_file]
     not_if "grep 'Listen #{node[:ganglia][:apache][:vhost_port]}' ports.conf"
   end
 
-  # Enable this site
-  file "/etc/apache2/sites-enabled/ganglia" do
-    action :delete
-  end
-  link "/etc/apache2/sites-enabled/ganglia" do
-    to "/etc/apache2/sites-available/ganglia.conf"
+  bash "enable ganlia web" do
+    user  "root"
+    code "a2ensite ganglia"
     notifies :reload, resources( :service => "apache2"), :delayed
   end
 end
