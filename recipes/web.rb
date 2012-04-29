@@ -38,18 +38,6 @@ if node[:ganglia][:apache][:write_config_file]
     )
   end
 
-  # Make sure apache listens on the specified port
-  bash "update apache ports.conf" do
-    user  "root"
-    cwd   "/etc/apache2"
-    code <<-EOH
-      echo "" >> ports.conf
-      echo "Listen #{node[:ganglia][:apache][:vhost_port]}" >> ports.conf
-      echo "NameVirtualHost *:#{node[:ganglia][:apache][:vhost_port]}" >> ports.conf
-    EOH
-    not_if "grep 'Listen #{node[:ganglia][:apache][:vhost_port]}' ports.conf"
-  end
-
   bash "enable ganlia web" do
     user  "root"
     code "a2ensite ganglia"
