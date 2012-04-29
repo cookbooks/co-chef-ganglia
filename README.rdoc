@@ -11,11 +11,21 @@ http://ganglia.sourceforge.net/
 
 = ATTRIBUTES:
 
+See the `attributes/ganglia.rb` file.
+
 = USAGE:
 
 A run list with "recipe[ganglia]" enables monitoring.  
 
-A run list with "recipe[ganglia::web]" enables the web interface.  
+A run list with "recipe[ganglia::web]" enables the web interface. NOTE: if 
+you're using apache, and you want to run the ganglia web interface on a
+different port, you should configure that with attributes available from 
+the apache cookbooks:
+
+    default[:apache][:listen_ports]
+
+However, This cookbook *does* make several attributes available to write an
+apache virtual host config file. 
 
 A run list with "recipe[ganglia::graphite]" enables graphite graphs.
 
